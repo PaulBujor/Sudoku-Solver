@@ -29,9 +29,6 @@ public class Solver {
     public static boolean valid(int[][][] presenceMatrix, int k) {
         for (int i = 0; i < 9; i++) {
             int presencePos = (k/27)*3 + (k%9)/3;
-//            System.out.println(presenceMatrix[0][k / 9][i] > 1);
-//            System.out.println(presenceMatrix[1][k % 9][i] > 1);
-//            System.out.println(presenceMatrix[2][presencePos][i] > 1);
             if (presenceMatrix[0][k / 9][i] > 1 || presenceMatrix[1][k % 9][i] > 1 || presenceMatrix[2][presencePos][i] > 1)
                 return false;
         }
@@ -80,7 +77,6 @@ public class Solver {
                         presence[1][k % 9][matrix[k / 9][k % 9] - 1]++;
                         presence[2][presencePos][matrix[k / 9][k % 9] - 1]++;
                     }
-//                    System.out.println(matrix[k / 9][k % 9]);
                     if (valid(presence, k)) {
                         if (k == 80)
                             solutionFound = true;
@@ -93,23 +89,28 @@ public class Solver {
                         }
                     }
                 } else {
-                    presence[0][k / 9][matrix[k / 9][k % 9] - 1] = 0;
-                    presence[1][k % 9][matrix[k / 9][k % 9] - 1] = 0;
-                    presence[2][(k/27)*3 + (k%9)/3][matrix[k / 9][k % 9] - 1] = 0;
+                    presence[0][k / 9][matrix[k / 9][k % 9] - 1]--;
+                    presence[1][k % 9][matrix[k / 9][k % 9] - 1]--;
+                    presence[2][(k/27)*3 + (k%9)/3][matrix[k / 9][k % 9] - 1]--;
                     matrix[k / 9][k % 9] = 0;
                     do {
                         k--;
                         if(k < 0) break;
-                        System.out.println(k);
                     } while (canModify[k / 9][k % 9] != 0);
                 }
             }
+        }
+
+        try {
+            save(matrix, "matrixOutput.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found - printing to display:");
             for (int i = 0; i < 81; i++) {
                 if (i % 9 == 0)
                     System.out.println();
                 System.out.print(matrix[i / 9][i % 9]);
             }
         }
-        System.out.println("Program stopped");
+        System.out.println("\n\nProgram stopped");
     }
 }
