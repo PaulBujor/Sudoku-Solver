@@ -28,7 +28,7 @@ public class Solver {
 
     public static boolean valid(int[][][] presenceMatrix, int k) {
         for (int i = 0; i < 9; i++) {
-            int presencePos = ((k % 9) / 3) + ((k / 9) / 3);
+            int presencePos = (k/27)*3 + (k%9)/3;
 //            System.out.println(presenceMatrix[0][k / 9][i] > 1);
 //            System.out.println(presenceMatrix[1][k % 9][i] > 1);
 //            System.out.println(presenceMatrix[2][presencePos][i] > 1);
@@ -55,7 +55,7 @@ public class Solver {
                 System.arraycopy(matrix[i], 0, canModify[i], 0, 9);
             int[][][] presence = new int[3][9][9];
             for (int k = 0; k < 81; k++) {
-                int presencePos = ((k % 9) / 3) + ((k / 9) / 3);
+                int presencePos = (k/27)*3 + (k%9)/3;
                 if (matrix[k / 9][k % 9] != 0) {
                     presence[0][k / 9][matrix[k / 9][k % 9] - 1] = 1;
                     presence[1][k % 9][matrix[k / 9][k % 9] - 1] = 1;
@@ -67,10 +67,9 @@ public class Solver {
             boolean solutionFound = false;
             int k = 0;
             while (k >= 0 && !solutionFound) {
-                System.out.println(k);
                 if (matrix[k / 9][k % 9] < 9) {
                     if (canModify[k / 9][k % 9] == 0) {
-                        int presencePos = ((k % 9) / 3) + ((k / 9) / 3);
+                        int presencePos = (k/27)*3 + (k%9)/3;
                         if (matrix[k / 9][k % 9] > 0) {
                             presence[0][k / 9][matrix[k / 9][k % 9] - 1]--;
                             presence[1][k % 9][matrix[k / 9][k % 9] - 1]--;
@@ -88,13 +87,15 @@ public class Solver {
                         else {
                             do {
                                 k++;
-                            } while (canModify[k / 9][k % 9] != 0);
+                            } while (canModify[k / 9][k % 9] != 0 && k < 80);
+                            if(k == 80)
+                                solutionFound = true;
                         }
                     }
                 } else {
                     presence[0][k / 9][matrix[k / 9][k % 9] - 1] = 0;
                     presence[1][k % 9][matrix[k / 9][k % 9] - 1] = 0;
-                    presence[2][((k % 9) / 3) + ((k / 9) / 3)][matrix[k / 9][k % 9] - 1] = 0;
+                    presence[2][(k/27)*3 + (k%9)/3][matrix[k / 9][k % 9] - 1] = 0;
                     matrix[k / 9][k % 9] = 0;
                     do {
                         k--;
