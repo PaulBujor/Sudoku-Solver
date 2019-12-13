@@ -22,8 +22,9 @@ public class Solver {
         for (int i = 0; i < 9; i++) {
             output.println();
             for (int j = 0; j < 9; j++)
-                output.print(matrix[i][j]);
+                output.print(matrix[i][j] + " ");
         }
+        output.close();
     }
 
     public static boolean valid(int[][][] presenceMatrix, int k) {
@@ -83,8 +84,8 @@ public class Solver {
                         else {
                             do {
                                 k++;
-                            } while (canModify[k / 9][k % 9] != 0 && k < 80);
-                            if(k == 80)
+                            } while (canModify[k / 9][k % 9] != 0 && k < 81);
+                            if(k == 81)
                                 solutionFound = true;
                         }
                     }
