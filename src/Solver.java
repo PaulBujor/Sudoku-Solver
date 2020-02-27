@@ -82,9 +82,13 @@ public class Solver {
                         if (k == 80)
                             solutionFound = true;
                         else {
-                            do {
-                                k++;
-                            } while (canModify[k / 9][k % 9] != 0 && k < 81);
+                            try {
+                                do {
+                                    k++;
+                                } while (canModify[k / 9][k % 9] != 0 && k < 81);
+                            } catch (ArrayIndexOutOfBoundsException e) {
+                                //
+                            }
                             if(k == 81)
                                 solutionFound = true;
                         }
